@@ -1,0 +1,44 @@
+version: '3.7'
+services:
+    lb:
+        restart: always
+        image: dockercloud/haproxy
+        links:
+            - cm-microservice
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+        environment:
+            STATS_AUTH: "user:admin1"
+            TIMEOUT_CONNECT: "300s"
+            TIMEOUT_CLIENT: "300s"
+            TIMEOUT_SERVER: "300s"
+        ports:
+            - '4119:8080'
+        logging:
+            driver: 'json-file'
+            options:
+                max-size: '5m'
+                max-file: '5'
+                labels: cm-microservice-lb-log
+    cm-microservice:
+        restart: always
+        build: .
+        env_file: .env
+        scale: 1
+        environment:
+            - 'VIRTUAL_HOST=*:8080'
+        volumes:
+            - .:/cm-microservice
+            - node_modules:/cm-microservice/node_modules
+        logging:
+            driver: 'json-file'
+            options:
+                max-size: '5m'
+                max-file: '5'
+                labels: cm-microservice-log
+volumes:
+    node_modules:
+networks:
+    default:
+        external:
+            name: br0
