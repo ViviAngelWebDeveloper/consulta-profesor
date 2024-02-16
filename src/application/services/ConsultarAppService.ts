@@ -16,7 +16,7 @@ export class ConsultarAppService {
         //const length = calculateNameLength(example.reason);
         //const result = length <= 4 ? `Tu eres` : `Vivi`;
         const result:string = 
-        "Tu eres Vivi " + dato.nombre + dato.apellido + dato.cedula + dato.correo + dato.curso;
+        "Tu eres Vivi " + dato.nombre + dato.apellido + dato.cedula + dato.correo + dato.curso + dato.idcurso;
         return Result.ok(result);
     }
 }

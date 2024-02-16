@@ -4,4 +4,5 @@ export interface datoVivi{
     cedula:number;
     correo:string;
     curso:string;
+    idcurso:number; 
 }
